@@ -1,12 +1,25 @@
 const path = require("path"),
       HtmlWebpackPlugin = require("html-webpack-plugin"),
-      {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer"),
       CleanWebpackPlugin = require("clean-webpack-plugin"),
-      TerserPlugin = require("terser-webpack-plugin"),
+      glob = require("glob"),
       webpack = require("webpack");
 
 module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
-  const DEBUG = argv.mode !== "production";
+  const DEBUG = argv.mode !== "production",
+        specs = glob.sync("./**/*.spec.{js,jsx}", {"ignore": ["./node_modules/**", "./dist/**"]}),
+        entries = specs.reduce(
+          (specs, spec) => { // eslint-disable-line no-shadow
+            specs[`${path.dirname(spec)}/${path.basename(spec).split(".").slice(0, -1).join(".")}`] = [ // eslint-disable-line newline-per-chained-call
+              "jasmine-core/lib/jasmine-core/jasmine-html.js",
+              "jasmine-core/lib/jasmine-core/boot.js",
+              "jasmine-core/lib/jasmine-core/jasmine.css",
+              spec
+            ];
+            return specs;
+          },
+          {}
+        );
+
   return {
     "devServer": {
       "compress": true,
@@ -15,9 +28,7 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
       "useLocalIp": true
     },
     "devtool": false,
-    "entry": {
-      "index": path.resolve(__dirname, "index.jsx")
-    },
+    "entry": entries,
     "module": {
       "rules": [
         {
@@ -29,6 +40,10 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
             "fix": true
           },
           "test": /\.jsx?$/u
+        },
+        {
+          "test": /\.css$/u,
+          "use": [{"loader": "style-loader"}, {"loader": "css-loader"}]
         },
         {
           "exclude": /node_modules/u,
@@ -46,15 +61,6 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
       ]
     },
     "optimization": {
-      "minimizer": [
-        new TerserPlugin({
-          "terserOptions": {
-            "output": {
-              "comments": false
-            }
-          }
-        })
-      ],
       "runtimeChunk": {
         "name": "vendors"
       },
@@ -69,26 +75,23 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
       }
     },
     "output": {
-      "filename": `[name].${argv.mode}.[chunkhash].js`,
+      "filename": "[name].[chunkhash].js",
       "libraryTarget": "umd",
-      "path": path.resolve(__dirname, "dist")
+      "path": path.resolve(__dirname, "dist/jasmine")
     },
     "plugins": [
-      new CleanWebpackPlugin(["dist"]),
+      new webpack.ProvidePlugin({"jasmineRequire": "jasmine-core/lib/jasmine-core/jasmine.js"}),
+      new CleanWebpackPlugin(["dist/jasmine"]),
       new webpack.DefinePlugin({
         "DEBUG": JSON.stringify(DEBUG)
       }),
       new HtmlWebpackPlugin({
+        "favicon": require.resolve("jasmine-core/images/jasmine_favicon.png"),
         "filename": "index.html",
         "minify": {
           "collapseWhitespace": !DEBUG,
           "removeComments": !DEBUG
-        },
-        "template": path.resolve(__dirname, "index.ejs")
-      }),
-      new BundleAnalyzerPlugin({
-        "analyzerMode": "static",
-        "openAnalyzer": false
+        }
       })
     ],
     "target": "web"
