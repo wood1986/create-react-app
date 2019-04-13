@@ -1,19 +1,19 @@
 const path = require("path"),
       HtmlWebpackPlugin = require("html-webpack-plugin"),
       CleanWebpackPlugin = require("clean-webpack-plugin"),
-      glob = require("glob"),
+      CopyPlugin = require('copy-webpack-plugin'),
+      fg = require("fast-glob"),
       webpack = require("webpack");
 
 module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
-  const DEBUG = argv.mode !== "production",
-        specs = glob.sync("./**/*.spec.{js,jsx}", {"ignore": ["./node_modules/**", "./dist/**"]}),
+  const PROD = argv.mode === "production",
+        specs = fg.sync(["./**/*.spec.{js,jsx}"], {"ignore": ["node_modules", "dist"]}),
         entries = specs.reduce(
           (specs, spec) => { // eslint-disable-line no-shadow
-            specs[`${path.dirname(spec)}/${path.basename(spec).split(".").slice(0, -1).join(".")}`] = [ // eslint-disable-line newline-per-chained-call
+            specs[path.basename(spec, path.extname(spec))] = [ // eslint-disable-line newline-per-chained-call
               "jasmine-core/lib/jasmine-core/jasmine-html.js",
               "jasmine-core/lib/jasmine-core/boot.js",
-              "jasmine-core/lib/jasmine-core/jasmine.css",
-              spec
+              path.resolve(__dirname, spec)
             ];
             return specs;
           },
@@ -42,17 +42,13 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
           "test": /\.jsx?$/u
         },
         {
-          "test": /\.css$/u,
-          "use": [{"loader": "style-loader"}, {"loader": "css-loader"}]
-        },
-        {
           "exclude": /node_modules/u,
           "test": /\.jsx?$/u,
           "use": [
             {
               "loader": "babel-loader",
               "options": {
-                "plugins": ["@babel/plugin-syntax-dynamic-import", ["babel-plugin-styled-components", {"displayName": DEBUG}]].concat(DEBUG ? [] : [["transform-react-remove-prop-types", {"removeImport": true}]]),
+                "plugins": ["@babel/plugin-syntax-dynamic-import", ["babel-plugin-styled-components", {"displayName": !PROD}]].concat(PROD ? [["transform-react-remove-prop-types", {"removeImport": true}]]: []),
                 "presets": ["@babel/preset-react"]
               }
             }
@@ -80,18 +76,19 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
       "path": path.resolve(__dirname, "dist/jasmine")
     },
     "plugins": [
+      new CleanWebpackPlugin(),
       new webpack.ProvidePlugin({"jasmineRequire": "jasmine-core/lib/jasmine-core/jasmine.js"}),
-      new CleanWebpackPlugin(["dist/jasmine"]),
-      new webpack.DefinePlugin({
-        "DEBUG": JSON.stringify(DEBUG)
-      }),
+      new CopyPlugin([
+        { "from": require.resolve("jasmine-core/lib/jasmine-core/jasmine.css") }
+      ]),
       new HtmlWebpackPlugin({
         "favicon": require.resolve("jasmine-core/images/jasmine_favicon.png"),
         "filename": "index.html",
         "minify": {
-          "collapseWhitespace": !DEBUG,
-          "removeComments": !DEBUG
-        }
+          "collapseWhitespace": PROD,
+          "removeComments": PROD
+        },
+        "template": path.resolve(__dirname, "index.spec.ejs")
       })
     ],
     "target": "web"

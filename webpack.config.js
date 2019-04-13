@@ -6,10 +6,10 @@ const path = require("path"),
       webpack = require("webpack");
 
 module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
-  const DEBUG = argv.mode !== "production";
+  const PROD = argv.mode === "production";
+
   return {
     "devServer": {
-      "compress": true,
       "host": "0.0.0.0",
       "open": true,
       "useLocalIp": true
@@ -37,7 +37,7 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
             {
               "loader": "babel-loader",
               "options": {
-                "plugins": ["@babel/plugin-syntax-dynamic-import", ["babel-plugin-styled-components", {"displayName": DEBUG}]].concat(DEBUG ? [] : [["transform-react-remove-prop-types", {"removeImport": true}]]),
+                "plugins": ["@babel/plugin-syntax-dynamic-import", ["babel-plugin-styled-components", {"displayName": !PROD}]].concat(PROD ? [["transform-react-remove-prop-types", {"removeImport": true}]] : []),
                 "presets": ["@babel/preset-react"]
               }
             }
@@ -46,15 +46,13 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
       ]
     },
     "optimization": {
-      "minimizer": [
-        new TerserPlugin({
-          "terserOptions": {
-            "output": {
-              "comments": false
-            }
+      "minimizer": PROD ? [new TerserPlugin({
+        "terserOptions": {
+          "output": {
+            "comments": false
           }
-        })
-      ],
+        }
+      })] : [],
       "runtimeChunk": {
         "name": "vendors"
       },
@@ -74,15 +72,12 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
       "path": path.resolve(__dirname, "dist")
     },
     "plugins": [
-      new CleanWebpackPlugin(["dist"]),
-      new webpack.DefinePlugin({
-        "DEBUG": JSON.stringify(DEBUG)
-      }),
+      new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         "filename": "index.html",
         "minify": {
-          "collapseWhitespace": !DEBUG,
-          "removeComments": !DEBUG
+          "collapseWhitespace": PROD,
+          "removeComments": PROD
         },
         "template": path.resolve(__dirname, "index.ejs")
       }),
@@ -91,6 +86,9 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
         "openAnalyzer": false
       })
     ],
+    "resolve": {
+      extensions: [".js", ".json", ".jsx", ".mjs"]
+    },
     "target": "web"
   };
 };
