@@ -1,8 +1,9 @@
 const path = require("path"),
       HtmlWebpackPlugin = require("html-webpack-plugin"),
       {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer"),
-      CleanWebpackPlugin = require("clean-webpack-plugin"),
+      {CleanWebpackPlugin} = require("clean-webpack-plugin"),
       TerserPlugin = require("terser-webpack-plugin"),
+      ManifestPlugin = require('webpack-manifest-plugin'),
       webpack = require("webpack");
 
 module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
@@ -16,7 +17,7 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
     },
     "devtool": false,
     "entry": {
-      "index": path.resolve(__dirname, "index.jsx")
+      "web.index": path.resolve(__dirname, "src", "web.index.jsx")
     },
     "module": {
       "rules": [
@@ -73,18 +74,13 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
     },
     "plugins": [
       new CleanWebpackPlugin(),
-      new HtmlWebpackPlugin({
-        "filename": "index.html",
-        "minify": {
-          "collapseWhitespace": PROD,
-          "removeComments": PROD
-        },
-        "template": path.resolve(__dirname, "index.ejs")
-      }),
+      new HtmlWebpackPlugin(),
+      new ManifestPlugin(),
       new BundleAnalyzerPlugin({
         "analyzerMode": "static",
         "openAnalyzer": false
-      })
+      }),
+      
     ],
     "resolve": {
       extensions: [".js", ".json", ".jsx", ".mjs"]
