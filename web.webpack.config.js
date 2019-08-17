@@ -3,8 +3,7 @@ const path = require("path"),
       {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer"),
       {CleanWebpackPlugin} = require("clean-webpack-plugin"),
       TerserPlugin = require("terser-webpack-plugin"),
-      ManifestPlugin = require('webpack-manifest-plugin'),
-      webpack = require("webpack");
+      ManifestPlugin = require("webpack-manifest-plugin");
 
 module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
   const PROD = argv.mode === "production";
@@ -47,13 +46,18 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
       ]
     },
     "optimization": {
-      "minimizer": PROD ? [new TerserPlugin({
-        "terserOptions": {
-          "output": {
-            "comments": false
-          }
-        }
-      })] : [],
+      "minimizer": PROD
+        ? [
+          new TerserPlugin({
+            "terserOptions": {
+              "mangle": false,
+              "output": {
+                "comments": false
+              }
+            }
+          })
+        ]
+        : [],
       "runtimeChunk": {
         "name": "vendors"
       },
@@ -79,11 +83,10 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
       new BundleAnalyzerPlugin({
         "analyzerMode": "static",
         "openAnalyzer": false
-      }),
-      
+      })
     ],
     "resolve": {
-      extensions: [".js", ".json", ".jsx", ".mjs"]
+      "extensions": [".js", ".json", ".jsx", ".mjs"]
     },
     "target": "web"
   };
