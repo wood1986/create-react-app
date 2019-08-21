@@ -9,7 +9,7 @@ module.exports = {
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "globals": {
-    "DEBUG": true
+    "globalThis": true
   },
   "parser": "babel-eslint",
   "parserOptions": {
@@ -49,6 +49,7 @@ module.exports = {
     "no-mixed-requires": 0,
     "sort-imports": 1,
     "react-hooks/rules-of-hooks": 2,
+    "no-restricted-imports": [2, {"patterns": ["lodash-es/*", "!lodash-es/debounce", "!lodash-es/throttle"]}],
 
     "no-async-promise-executor": 2,
     "no-await-in-loop": 2,
@@ -212,7 +213,6 @@ module.exports = {
     "arrow-spacing": 2,
     "generator-star-spacing": 2,
     "no-duplicate-imports": 2,
-    "no-restricted-imports": 2,
     "no-useless-computed-key": 2,
     "no-useless-constructor": 2,
     "no-useless-rename": 2,

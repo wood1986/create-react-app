@@ -1,7 +1,7 @@
 const path = require("path"),
-      nodeExternals = require('webpack-node-externals');
+      nodeExternals = require("webpack-node-externals");
 
-module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
+module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
   const PROD = argv.mode === "production";
 
   return {
@@ -43,12 +43,12 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
       ]
     },
     "output": {
-      "filename": `[name].js`,
+      "filename": "[name].js",
       "libraryTarget": "umd",
       "path": path.resolve(__dirname, "dist")
     },
     "resolve": {
-      extensions: [".js", ".json", ".jsx", ".mjs"]
+      "extensions": [".js", ".json", ".jsx", ".mjs"]
     },
     "target": "node"
   };

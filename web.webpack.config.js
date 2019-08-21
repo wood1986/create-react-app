@@ -5,7 +5,7 @@ const path = require("path"),
       TerserPlugin = require("terser-webpack-plugin"),
       ManifestPlugin = require("webpack-manifest-plugin");
 
-module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
+module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
   const PROD = argv.mode === "production";
 
   return {
