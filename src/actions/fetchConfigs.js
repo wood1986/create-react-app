@@ -16,6 +16,7 @@ export const fetchConfigs = (ids) => (dispatch, getState) => {
     resolve({
       "payload": ids.map((id) => ({
         id,
+        "type": "item",
         "value": generateUuid()
       })),
       "type": FETCH_CONFIGS
