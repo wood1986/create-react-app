@@ -1,29 +1,39 @@
 import React, {useEffect, useRef} from "react";
 
+const domRefs = new Map(),
+      intersectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            domRefs.set(entry.target, entry);
+          });
+        },
+        {
+          "root": null,
+          "threshold": [
+            ...Array(10).
+              fill(0).
+              map((value, index, array) => Number(index) / array.length), 1
+          ]    
+        }
+      );
+
 // eslint-disable-next-line react/display-name
 export default (Component) => {
-  // eslint-disable-next-line no-undef
-  const elements = useRef(new Map()),
-        intersectionObserver = useRef(new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (!elements.has(entry.target)) {
-              throw new Error();
-            }
-
-            elements.set(entry.target, entry);
-          });
-        }, {
-          "root": null,
-          "threshold": [...Array(10).fill(0).map((value, index, array) => Number(index) / array.length), 1]
-        }));
+  const domRef = useRef(null);
 
   useEffect(() => {
-    intersectionObserver.current.observe();
+    if (domRef) {
+      intersectionObserver.observe(domRef);
+      domRefs.set(domRef);
+    }
 
     return () => {
-      intersectionObserver.current.unobserve();
+      if (domRef) {
+        intersectionObserver.unobserve(domRef);
+        domRefs.delete(domRef);
+      }
     };
-  });
+  }, []);
 
-  return <Component />;
+  return <Component ref={domRef}/>;
 };

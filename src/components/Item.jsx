@@ -1,7 +1,4 @@
 import React from "react";
 
-// eslint-disable-next-line react/display-name
-export default React.forwardRef((props, ref) => {
-  // eslint-disable-next-line react/prop-types
-  return <div ref={ref}>{props.uuid}</div>;
-});
+// eslint-disable-next-line react/display-name, react/prop-types
+export default React.forwardRef((props, ref) => <div ref={ref}>{props.uuid}</div>);

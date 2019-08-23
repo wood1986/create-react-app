@@ -5,7 +5,8 @@ module.exports = {
     "browser": true,
     "jasmine": true,
     "node": true,
-    "worker": true
+    "worker": true,
+    "es6": true,
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "globals": {
