@@ -58,6 +58,7 @@ module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
           })
         ]
         : [],
+      "moduleIds": "hashed",
       "runtimeChunk": {
         "name": "vendors"
       },

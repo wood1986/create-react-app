@@ -6,7 +6,7 @@ export default {
     [FETCH_CONFIGS]: (state, action) => {
       const nextState = {...state};
       action.payload.forEach((config) => {
-        nextState[config.id] = config.value;
+        nextState[config.id] = config;
       });
 
       return nextState;

@@ -12,8 +12,8 @@ delete globalThis.__PRELOADED_STATE__;
 
 export default createStore(
   combineReducers({
-    configs
+    ...configs
   }),
   preloadedState,
-  applyMiddleware([thunk, logger])
+  applyMiddleware(...[thunk, logger])
 );
