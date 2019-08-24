@@ -4,7 +4,7 @@ import components from "../components";
 import fetchConfigs from "../actions/fetchConfigs";
 
 // eslint-disable-next-line react/display-name
-export default (props) => {
+export default React.memo((props) => {
   // eslint-disable-next-line react/prop-types
   const config = useSelector((state) => state.configs[props.id]),
         dispatch = useDispatch(),
@@ -23,5 +23,8 @@ export default (props) => {
     return null;
   }
 
+  // eslint-disable-next-line react/prop-types
+  console.log(props.id);
+
   return <Component {...props} {...config} />;
-};
+});

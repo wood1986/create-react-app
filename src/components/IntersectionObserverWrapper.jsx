@@ -10,30 +10,33 @@ const domRefs = new Map(),
         {
           "root": null,
           "threshold": [
+            // eslint-disable-next-line no-magic-numbers
             ...Array(10).
               fill(0).
               map((value, index, array) => Number(index) / array.length), 1
-          ]    
+          ]
         }
       );
 
-// eslint-disable-next-line react/display-name
-export default (Component) => {
+// eslint-disable-next-line react/display-name, no-unused-vars
+export default (Component) => (props) => {
   const domRef = useRef(null);
 
   useEffect(() => {
-    if (domRef) {
-      intersectionObserver.observe(domRef);
-      domRefs.set(domRef);
+    const element = domRef.current;
+
+    if (element) {
+      intersectionObserver.observe(element);
+      domRefs.set(element);
     }
 
     return () => {
-      if (domRef) {
-        intersectionObserver.unobserve(domRef);
-        domRefs.delete(domRef);
+      if (element) {
+        intersectionObserver.unobserve(element);
+        domRefs.delete(element);
       }
     };
   }, []);
 
-  return <Component ref={domRef}/>;
+  return <Component ref={domRef} {...props}/>;
 };

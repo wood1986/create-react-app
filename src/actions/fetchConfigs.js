@@ -17,7 +17,8 @@ export default (ids) => (dispatch, getState) => {
     resolve(dispatch({
       "payload": ids.map((id) => ({
         id,
-        "type": "item",
+        // eslint-disable-next-line no-magic-numbers
+        "type": ["EagerItem", "LazyItem"][~~(Math.random() * 2)],
         "value": generateUuid()
       })),
       "type": FETCH_CONFIGS
