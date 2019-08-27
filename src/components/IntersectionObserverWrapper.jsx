@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
 
 const domRefs = new Map(),
-      intersectionObserver = new IntersectionObserver(
+      intersectionObserver = globalThis.IntersectionObserver && new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             domRefs.set(entry.target, entry);

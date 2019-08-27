@@ -8,7 +8,15 @@ export default React.memo((props) => {
   // eslint-disable-next-line react/prop-types
   const config = useSelector((state) => state.configs[props.id]),
         dispatch = useDispatch(),
-        [Component, setComponent] = useState(null);
+        [Component, setComponent] = useState(() => {
+          if (config) {
+            // eslint-disable-next-line no-shadow
+            const Component = components[config.type];
+            return Component;
+          }
+
+          return null;
+        });
 
   useEffect(() => {
     if (!config) {
@@ -16,15 +24,12 @@ export default React.memo((props) => {
       return;
     }
 
-    components[config.type]().then((c) => setComponent(c.default));
-  });
+    setComponent(components[config.type]);
+  }, [config]);
 
   if (!config || !Component) {
     return null;
   }
-
-  // eslint-disable-next-line react/prop-types
-  console.log(props.id);
 
   return <Component {...props} {...config} />;
 });

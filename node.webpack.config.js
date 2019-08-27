@@ -1,5 +1,4 @@
-const path = require("path"),
-      nodeExternals = require("webpack-node-externals");
+const path = require("path");
 
 module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
   const PROD = argv.mode === "production";
@@ -14,7 +13,6 @@ module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
     "entry": {
       "node.index": path.resolve(__dirname, "src", "node.index.jsx")
     },
-    "externals": [nodeExternals()],
     "module": {
       "rules": [
         {
@@ -34,7 +32,10 @@ module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
             {
               "loader": "babel-loader",
               "options": {
-                "plugins": ["@babel/plugin-syntax-dynamic-import", ["babel-plugin-styled-components", {"displayName": !PROD}]].concat(PROD ? [["transform-react-remove-prop-types", {"removeImport": true}]] : []),
+                "plugins": [
+                  "@babel/plugin-syntax-dynamic-import",
+                  ["babel-plugin-styled-components", {"displayName": !PROD}]
+                ].concat(PROD ? [["transform-react-remove-prop-types", {"removeImport": true}]] : []),
                 "presets": ["@babel/preset-react"]
               }
             }
