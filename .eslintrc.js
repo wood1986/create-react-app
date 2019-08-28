@@ -6,11 +6,12 @@ module.exports = {
     "jasmine": true,
     "node": true,
     "worker": true,
-    "es6": true,
+    "es6": true
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "globals": {
-    "globalThis": true
+    "globalThis": true,
+    "MANIFEST": true
   },
   "parser": "babel-eslint",
   "parserOptions": {

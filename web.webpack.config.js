@@ -3,10 +3,12 @@ const path = require("path"),
       {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer"),
       {CleanWebpackPlugin} = require("clean-webpack-plugin"),
       TerserPlugin = require("terser-webpack-plugin"),
-      ManifestPlugin = require("webpack-manifest-plugin");
+      ManifestPlugin = require("webpack-manifest-plugin"),
+      luxon = require("luxon");
 
 module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
-  const PROD = argv.mode === "production";
+  const PROD = argv.mode === "production",
+        version = luxon.DateTime.utc().toFormat("yyMMddHHmm");
 
   return {
     "devServer": {
@@ -75,7 +77,7 @@ module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
     "output": {
       "filename": `[name].${argv.mode}.[chunkhash].js`,
       "libraryTarget": "umd",
-      "path": path.resolve(__dirname, "dist")
+      "path": path.resolve(__dirname, "dist", version)
     },
     "plugins": [
       new CleanWebpackPlugin(),

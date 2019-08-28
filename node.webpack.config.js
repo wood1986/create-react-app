@@ -1,7 +1,10 @@
-const path = require("path");
+const path = require("path"),
+      webpack = require("webpack"),
+      luxon = require("luxon");
 
 module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
-  const PROD = argv.mode === "production";
+  const PROD = argv.mode === "production",
+        version = luxon.DateTime.utc().toFormat("yyMMddHHmm");
 
   return {
     "devServer": {
@@ -46,8 +49,14 @@ module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
     "output": {
       "filename": "[name].js",
       "libraryTarget": "umd",
-      "path": path.resolve(__dirname, "dist")
+      "path": path.resolve(__dirname, "dist", version)
     },
+    "plugins": [
+      new webpack.DefinePlugin({
+        // eslint-disable-next-line global-require
+        "MANIFEST": JSON.stringify(require(`./dist/${version}/manifest.json`))
+      })
+    ],
     "resolve": {
       "extensions": [".js", ".json", ".jsx", ".mjs"]
     },

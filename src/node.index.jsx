@@ -1,21 +1,32 @@
 /* eslint-disable no-magic-numbers */
 import "./components";
 import App from "./App";
-import {ChunkExtractor} from "@loadable/server";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import fetchConfigs from "./actions/fetchConfigs";
-import path from "path";
 import store from "./store";
 
-const statsFile = path.resolve("dist/loadable-stats.json"),
-      extractor = new ChunkExtractor({statsFile});
-
 globalThis.btoa = require("abab").btoa;
-
-store.dispatch(fetchConfigs([0, 1])).
+// eslint-disable-next-line no-underscore-dangle
+globalThis.__SANDBOX_PROMISE__ = store.dispatch(fetchConfigs([0, 1, 2])).
   then(() => {
-    console.log(store.getState());
-    const jsx = extractor.collectChunks(<App />);
-    console.log(ReactDOMServer.renderToStaticMarkup(jsx));
+    const preloadedState = store.getState(),
+          html = ReactDOMServer.renderToStaticMarkup(<App />),
+          scriptTags = ["web.index.js", "vendors.js"].map((script) => `<script src='${MANIFEST[script]}'></script>`).join("");
+
+    return `
+      <!DOCTYPE html>
+      <html lang="en>
+        <head>
+          <title>SSR</title>
+        </head>
+        <body>
+          <script>
+            window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</gu, "\\u003c")}
+          </script>
+          ${scriptTags}
+          <div id="root">${html}</div>
+        </body>
+      </html>
+    `;
   });

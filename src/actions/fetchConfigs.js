@@ -13,15 +13,13 @@ export default (ids) => (dispatch, getState) => {
     return Promise.resolve();
   }
 
-  return new Promise((resolve) => {
-    resolve(dispatch({
-      "payload": ids.map((id) => ({
-        id,
-        // eslint-disable-next-line no-magic-numbers
-        "type": ["EagerItem", "LazyItem"][~~(Math.random() * 2)],
-        "value": generateUuid()
-      })),
-      "type": FETCH_CONFIGS
-    }));
-  });
+  return Promise.resolve(dispatch({
+    "payload": ids.map((id) => ({
+      id,
+      // eslint-disable-next-line no-magic-numbers
+      "type": ["EagerItem", "LazyItem"][~~(Math.random() * 2)],
+      "value": generateUuid()
+    })),
+    "type": FETCH_CONFIGS
+  }));
 };

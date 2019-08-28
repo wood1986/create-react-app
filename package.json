@@ -10,8 +10,8 @@
     "build:web:PRO": "webpack --mode=production --config=./web.webpack.config.js",
     "build:node:DEV": "webpack --mode=development --config=./node.webpack.config.js",
     "build:node:PRO": "webpack --mode=production --config=./node.webpack.config.js",
-    "build:all:DEV": "npm run build:web:DEV && npm run build:node:DEV",
-    "build:all:PRO": "npm run build:web:PRO && npm run build:node:PRO",
+    "build:all:DEV": "yarn build:web:DEV && yarn run build:node:DEV",
+    "build:all:PRO": "yarn run build:web:PRO && yarn run build:node:PRO",
     "eslint": "eslint -c ./.eslintrc.js --ext .js --ext .jsx --no-ignore '.eslintrc.js' .eslintrc.js ."
   },
   "dependencies": {
@@ -38,6 +38,7 @@
     "jasmine": "^3.4.0",
     "localforage": "^1.7.3",
     "lodash-es": "^4.17.15",
+    "luxon": "^1.17.2",
     "npm-check-updates": "^3.1.20",
     "nyc": "^14.1.1",
     "prop-types": "^15.7.2",

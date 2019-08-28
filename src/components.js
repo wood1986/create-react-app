@@ -1,8 +1,10 @@
 /* eslint-disable global-require */
 /* eslint-disable dot-notation */
+import lazy from "./lazy";
+
 const components = {};
 
-components["LazyItem"] = () => import("./components/LazyItem");
-components["EagerItem"] = () => Promise.resolve(require("./components/EagerItem"));
+components["LazyItem"] = lazy(() => import("./components/LazyItem"));
+components["EagerItem"] = () => require("./components/EagerItem").default;
 
 export default components;

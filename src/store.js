@@ -1,10 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import configs from "./reducers/configs";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
 require("core-js/proposals/global-this");
 
-// eslint-disable-next-line no-underscore-dangle
 const preloadedState = globalThis.__PRELOADED_STATE__ || {
   "configs": {
     "0": {
@@ -20,7 +20,8 @@ const preloadedState = globalThis.__PRELOADED_STATE__ || {
   }
 };
 
-// eslint-disable-next-line no-underscore-dangle
+// const preloadedState = globalThis.__PRELOADED_STATE__ || {};
+
 delete globalThis.__PRELOADED_STATE__;
 
 export default createStore(
