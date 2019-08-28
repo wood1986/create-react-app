@@ -8,7 +8,7 @@ const path = require("path"),
 
 module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
   const PROD = argv.mode === "production",
-        version = luxon.DateTime.utc().toFormat("yyMMddHHmm");
+        version = luxon.DateTime.utc().toFormat("HHmm");
 
   return {
     "devServer": {
