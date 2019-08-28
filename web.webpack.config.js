@@ -77,7 +77,8 @@ module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
     "output": {
       "filename": `[name].${argv.mode}.[chunkhash].js`,
       "libraryTarget": "umd",
-      "path": path.resolve(__dirname, "dist", version)
+      "path": path.resolve(__dirname, "dist", version),
+      "publicPath": `/${version}/`
     },
     "plugins": [
       new CleanWebpackPlugin(),

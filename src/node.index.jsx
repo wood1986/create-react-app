@@ -16,16 +16,16 @@ globalThis.__SANDBOX_PROMISE__ = store.dispatch(fetchConfigs([0, 1, 2])).
 
     return `
       <!DOCTYPE html>
-      <html lang="en>
+      <html lang="en">
         <head>
           <title>SSR</title>
         </head>
         <body>
+          <div id="root">${html}</div>
           <script>
             window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</gu, "\\u003c")}
           </script>
           ${scriptTags}
-          <div id="root">${html}</div>
         </body>
       </html>
     `;
