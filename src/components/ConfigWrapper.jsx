@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import components from "../components";
 import fetchConfigs from "../actions/fetchConfigs";
@@ -8,11 +8,25 @@ export default React.memo((props) => {
   // eslint-disable-next-line react/prop-types
   const config = useSelector((state) => state.configs[props.id]),
         dispatch = useDispatch(),
-        Component = components[config.type]();
+        [Component, setComponent] = useState(config && !(components[config.type] instanceof Function) ? components[config.type].default : null);
 
   useEffect(() => {
-    if (!config) {
-      dispatch(fetchConfigs([props.id]));
+    dispatch(fetchConfigs([props.id]));
+  }, [config]);
+
+  useEffect(() => {
+    if (config) {
+      // eslint-disable-next-line no-shadow
+      const Component = components[config.type];
+
+      if (Component instanceof Function) {
+        // eslint-disable-next-line new-cap
+        Component().then((component) => {
+          setComponent(component.default);
+        });
+      } else if (Component) {
+        setComponent(Component.default);
+      }
     }
   }, [config]);
 
