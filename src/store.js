@@ -3,7 +3,6 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import configs from "./reducers/configs";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
-require("core-js/proposals/global-this");
 
 const preloadedState = globalThis.__PRELOADED_STATE__ || {};
 
