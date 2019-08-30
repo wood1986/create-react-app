@@ -10,8 +10,8 @@
     "build:web:PRO": "webpack --mode=production --config=./web.webpack.config.js",
     "build:node:DEV": "webpack --mode=development --config=./node.webpack.config.js",
     "build:node:PRO": "webpack --mode=production --config=./node.webpack.config.js",
-    "build:all:DEV": "yarn build:web:DEV && yarn run build:node:DEV",
-    "build:all:PRO": "yarn run build:web:PRO && yarn run build:node:PRO",
+    "build:all:DEV": "yarn build:web:DEV && yarn run build:node:DEV && node index.js",
+    "build:all:PRO": "yarn run build:web:PRO && yarn run build:node:PRO && node index.js",
     "eslint": "eslint -c ./.eslintrc.js --ext .js --ext .jsx --no-ignore '.eslintrc.js' .eslintrc.js ."
   },
   "dependencies": {

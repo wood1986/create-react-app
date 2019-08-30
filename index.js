@@ -15,6 +15,11 @@ const http = require("http"),
       app = new Koa(),
       router = new Router();
 
+require("dns").lookup(require("os").hostname(), (_err, add) => {
+  console.log();
+  console.log(`Go opening https://${add}/ssr/<version>`);
+});
+
 app.use(responseTime({"hrtime": true}));
 app.use(serve(path.resolve(__dirname, "dist")));
 
@@ -46,7 +51,8 @@ app.use(router.routes());
 http2.createSecureServer({
   "key": certificate,
   "cert": certificate,
-  "allowHTTP1": true
+  "allowHTTP1": true,
+  
 }, app.callback()).listen(443);
 
 http.createServer(app.callback()).listen(80);
