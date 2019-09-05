@@ -4,6 +4,8 @@ const path = require("path"),
 module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
   const PROD = argv.mode === "production";
 
+  console.log(env);
+
   return {
     "devServer": {
       "host": "0.0.0.0",
