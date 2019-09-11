@@ -2,10 +2,9 @@ const path = require("path"),
       HtmlWebpackPlugin = require("html-webpack-plugin"),
       {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer"),
       CleanWebpackPlugin = require("clean-webpack-plugin"),
-      TerserPlugin = require("terser-webpack-plugin"),
-      webpack = require("webpack");
+      TerserPlugin = require("terser-webpack-plugin");
 
-module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
+module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
   const PROD = argv.mode === "production";
 
   return {
@@ -46,13 +45,17 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
       ]
     },
     "optimization": {
-      "minimizer": PROD ? [new TerserPlugin({
-        "terserOptions": {
-          "output": {
-            "comments": false
-          }
-        }
-      })] : [],
+      "minimizer": PROD
+        ? [
+          new TerserPlugin({
+            "terserOptions": {
+              "output": {
+                "comments": false
+              }
+            }
+          })
+        ]
+        : [],
       "runtimeChunk": {
         "name": "vendors"
       },
@@ -73,21 +76,14 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
     },
     "plugins": [
       new CleanWebpackPlugin(),
-      new HtmlWebpackPlugin({
-        "filename": "index.html",
-        "minify": {
-          "collapseWhitespace": PROD,
-          "removeComments": PROD
-        },
-        "template": path.resolve(__dirname, "index.ejs")
-      }),
+      new HtmlWebpackPlugin(),
       new BundleAnalyzerPlugin({
         "analyzerMode": "static",
         "openAnalyzer": false
       })
     ],
     "resolve": {
-      extensions: [".js", ".json", ".jsx", ".mjs"]
+      "extensions": [".js", ".json", ".jsx", ".mjs"]
     },
     "target": "web"
   };

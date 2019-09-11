@@ -1,11 +1,11 @@
 const path = require("path"),
       HtmlWebpackPlugin = require("html-webpack-plugin"),
       CleanWebpackPlugin = require("clean-webpack-plugin"),
-      CopyPlugin = require('copy-webpack-plugin'),
+      CopyPlugin = require("copy-webpack-plugin"),
       fg = require("fast-glob"),
       webpack = require("webpack");
 
-module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
+module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
   const PROD = argv.mode === "production",
         specs = fg.sync(["./**/*.spec.{js,jsx}"], {"ignore": ["node_modules", "dist"]}),
         entries = specs.reduce(
@@ -48,7 +48,7 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
             {
               "loader": "babel-loader",
               "options": {
-                "plugins": ["@babel/plugin-syntax-dynamic-import", ["babel-plugin-styled-components", {"displayName": !PROD}]].concat(PROD ? [["transform-react-remove-prop-types", {"removeImport": true}]]: []),
+                "plugins": ["@babel/plugin-syntax-dynamic-import", ["babel-plugin-styled-components", {"displayName": !PROD}]].concat(PROD ? [["transform-react-remove-prop-types", {"removeImport": true}]] : []),
                 "presets": ["@babel/preset-react"]
               }
             }
@@ -78,9 +78,7 @@ module.exports = (env, argv) => {  // eslint-disable-line max-lines-per-function
     "plugins": [
       new CleanWebpackPlugin(),
       new webpack.ProvidePlugin({"jasmineRequire": "jasmine-core/lib/jasmine-core/jasmine.js"}),
-      new CopyPlugin([
-        { "from": require.resolve("jasmine-core/lib/jasmine-core/jasmine.css") }
-      ]),
+      new CopyPlugin([{"from": require.resolve("jasmine-core/lib/jasmine-core/jasmine.css")}]),
       new HtmlWebpackPlugin({
         "favicon": require.resolve("jasmine-core/images/jasmine_favicon.png"),
         "filename": "index.html",
