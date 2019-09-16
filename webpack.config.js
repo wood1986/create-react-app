@@ -1,7 +1,6 @@
 const path = require("path"),
       HtmlWebpackPlugin = require("html-webpack-plugin"),
       {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer"),
-      CleanWebpackPlugin = require("clean-webpack-plugin"),
       TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
