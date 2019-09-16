@@ -75,7 +75,6 @@ module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
       "path": path.resolve(__dirname, "dist")
     },
     "plugins": [
-      new CleanWebpackPlugin(),
       new HtmlWebpackPlugin(),
       new BundleAnalyzerPlugin({
         "analyzerMode": "static",
