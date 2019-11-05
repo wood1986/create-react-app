@@ -11,6 +11,7 @@ export default React.memo((props) => {
         [Component, setComponent] = useState(config && !(components[config.type] instanceof Function) ? components[config.type].default : null);
 
   useEffect(() => {
+    // eslint-disable-next-line react/prop-types
     dispatch(fetchConfigs([props.id]));
   }, [config]);
 

@@ -2,6 +2,7 @@ import "./components";
 import App from "./App";
 import React from "react";
 import ReactDOM from "react-dom";
+import createStore from "./createStore";
 
 let element = document.getElementById("root");
 if (!element) {
@@ -10,4 +11,4 @@ if (!element) {
   document.body.appendChild(element);
 }
 
-ReactDOM[element.childElementCount > 0 ? "hydrate" : "render"](<App />, element);
+ReactDOM[element.childElementCount > 0 ? "hydrate" : "render"](<App store={createStore()} />, element);

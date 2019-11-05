@@ -1,10 +1,8 @@
 const path = require("path"),
-      webpack = require("webpack"),
-      luxon = require("luxon");
+      webpack = require("webpack");
 
-module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
-  const PROD = argv.mode === "production",
-        version = luxon.DateTime.utc().toFormat("HHmm");
+module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
+  const PROD = argv.mode === "production";
 
   return {
     "devServer": {

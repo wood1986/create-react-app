@@ -8,7 +8,7 @@ const preloadedState = globalThis.__PRELOADED_STATE__ || {};
 
 delete globalThis.__PRELOADED_STATE__;
 
-export default createStore(
+export default () => createStore(
   combineReducers({
     ...configs
   }),
