@@ -49,12 +49,12 @@ module.exports = (env, argv) => { // eslint-disable-line max-lines-per-function
     "output": {
       "filename": "[name].js",
       "libraryTarget": "umd",
-      "path": path.resolve(__dirname, "dist", version)
+      "path": path.resolve(__dirname, "dist"),
     },
     "plugins": [
       new webpack.DefinePlugin({
         // eslint-disable-next-line global-require
-        "MANIFEST": JSON.stringify(require(`./dist/${version}/manifest.json`))
+        "MANIFEST": JSON.stringify(require(path.resolve(__dirname, "dist", "manifest.json")))
       })
     ],
     "resolve": {
