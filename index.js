@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 // eslint-disable-next-line no-process-env, dot-notation
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 const http = require("http"),
       http2 = require("http2"),
@@ -20,8 +20,8 @@ const pems = selfsigned.generate(null, {"algorithm": "sha256", "days": 1, "keySi
   polka({
     "server": http2.createSecureServer({
       "allowHTTP1": true,
-      "key": Buffer.from(pems.private),
-      "cert": Buffer.from(pems.cert)
+      "cert": Buffer.from(pems.cert),
+      "key": Buffer.from(pems.private)
     })
   }).listen(443),
   polka({
