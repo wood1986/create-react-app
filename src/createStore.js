@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import configs from "./reducers/configs";
-import logger from "redux-logger";
 import thunk from "redux-thunk";
 
 const preloadedState = globalThis.__PRELOADED_STATE__ || {};
@@ -13,5 +12,5 @@ export default () => createStore(
     ...configs
   }),
   preloadedState,
-  applyMiddleware(...[thunk, logger])
+  applyMiddleware(...[thunk])
 );

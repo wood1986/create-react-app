@@ -9,9 +9,9 @@ import fetchConfigs from "./actions/fetchConfigs";
 globalThis.btoa = require("abab").btoa;
 
 export default (req) => {
-  const query = req.query || {},
-        ssr = (query.ssr || "").toLowerCase() !== "false",
-        count = ssr ? parseInt(query.count || 0, 10) : 0,
+  const params = new URLSearchParams(req.search),
+        ssr = params.get("ssr") !== "false",
+        count = ssr ? parseInt(params.get("count") || 0, 10) : 0,
         store = createStore();
 
   return Promise.resolve().

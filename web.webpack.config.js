@@ -46,6 +46,7 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
       ]
     },
     "optimization": {
+      "chunkIds": "named",
       "minimizer": PROD
         ? [
           new TerserPlugin({
@@ -59,7 +60,6 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
         ]
         : [],
       "moduleIds": "hashed",
-      "chunkIds": "named",
       "runtimeChunk": {
         "name": "vendors"
       },
@@ -76,7 +76,7 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
     "output": {
       "filename": `[name].${argv.mode}.[chunkhash].js`,
       "libraryTarget": "umd",
-      "path": path.resolve(__dirname, "dist"),
+      "path": path.resolve(__dirname, "dist")
     },
     "plugins": [
       new CleanWebpackPlugin(),

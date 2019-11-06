@@ -48,7 +48,7 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
     "output": {
       "filename": "[name].js",
       "libraryTarget": "umd",
-      "path": path.resolve(__dirname, "dist"),
+      "path": path.resolve(__dirname, "dist")
     },
     "plugins": [
       new webpack.DefinePlugin({
