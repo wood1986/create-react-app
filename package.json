@@ -12,7 +12,8 @@
     "build:node:PRO": "webpack --mode=production --config=./node.webpack.config.js --output-public-path=/statics/",
     "build:all:DEV": "yarn build:web:DEV && yarn run build:node:DEV",
     "build:all:PRO": "yarn run build:web:PRO && yarn run build:node:PRO",
-    "eslint": "eslint -c ./.eslintrc.js --ext .js --ext .jsx --no-ignore '.eslintrc.js' .eslintrc.js ."
+    "eslint": "eslint -c ./.eslintrc.js --ext .js --ext .jsx --no-ignore '.eslintrc.js' .eslintrc.js .",
+    "pm2": "pm2 kill && pm2 start && pm2 monit"
   },
   "dependencies": {
     "@babel/core": "^7.5.5",
@@ -41,6 +42,7 @@
     "node-fetch": "^2.6.0",
     "npm-check-updates": "^3.1.20",
     "nyc": "^14.1.1",
+    "pm2": "^4.1.2",
     "polka": "^0.5.2",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
