@@ -11,4 +11,6 @@ if (!element) {
   document.body.appendChild(element);
 }
 
-ReactDOM[element.childElementCount > 0 ? "hydrate" : "render"](<App store={createStore()} />, element);
+const params = new globalThis.URLSearchParams(globalThis.location.search);
+
+ReactDOM[element.childElementCount > 0 ? "hydrate" : "render"](<App store={createStore()} count={parseInt(params.get("count") || 0, 10)}/>, element);

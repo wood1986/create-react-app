@@ -1,17 +1,17 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-magic-numbers */
+/* eslint-disable no-magic-numbers, camelcase, no-undef */
 import "./components";
-import createStore from "./createStore";
 import App from "./App";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
+import createStore from "./createStore";
 import fetchConfigs from "./actions/fetchConfigs";
 
 globalThis.btoa = require("abab").btoa;
 
 export default (req) => {
-  const ssr = (req.query.ssr || "").toLowerCase() !== "false",
-        count = ssr ? parseInt(req.query.count || 0, 10) : 0,
+  const query = req.query || {},
+        ssr = (query.ssr || "").toLowerCase() !== "false",
+        count = ssr ? parseInt(query.count || 0, 10) : 0,
         store = createStore();
 
   return Promise.resolve().
@@ -20,7 +20,7 @@ export default (req) => {
       map((value, index) => index)))).
     then(() => {
       const preloadedState = store.getState(),
-            html = ssr ? ReactDOMServer.renderToStaticMarkup(<App store={store} />) : "",
+            html = ssr ? ReactDOMServer.renderToStaticMarkup(<App count={count} store={store} />) : "",
             scriptTags = ["web.index.js", "vendors.js"].map((script) => `<script async src='${MANIFEST[script]}'></script>`).join("");
       return `<!DOCTYPE html>
 <html lang="en">
@@ -37,3 +37,5 @@ export default (req) => {
 </html>`;
     });
 };
+
+export const entry = `${__webpack_public_path__}node.index.js`;

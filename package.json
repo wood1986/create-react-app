@@ -6,10 +6,10 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config=./web.webpack.config.js --mode=development",
-    "build:web:DEV": "webpack --mode=development --config=./web.webpack.config.js",
-    "build:web:PRO": "webpack --mode=production --config=./web.webpack.config.js",
-    "build:node:DEV": "webpack --mode=development --config=./node.webpack.config.js",
-    "build:node:PRO": "webpack --mode=production --config=./node.webpack.config.js",
+    "build:web:DEV": "webpack --mode=development --config=./web.webpack.config.js --output-public-path=/statics/",
+    "build:web:PRO": "webpack --mode=production --config=./web.webpack.config.js --output-public-path=/statics/",
+    "build:node:DEV": "webpack --mode=development --config=./node.webpack.config.js --output-public-path=/statics/",
+    "build:node:PRO": "webpack --mode=production --config=./node.webpack.config.js --output-public-path=/statics/",
     "build:all:DEV": "yarn build:web:DEV && yarn run build:node:DEV",
     "build:all:PRO": "yarn run build:web:PRO && yarn run build:node:PRO",
     "eslint": "eslint -c ./.eslintrc.js --ext .js --ext .jsx --no-ignore '.eslintrc.js' .eslintrc.js ."
