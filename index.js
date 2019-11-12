@@ -64,12 +64,15 @@ const pems = selfsigned.generate(null, {"algorithm": "sha256", "days": 1, "keySi
       }
 
       p.then((html) => {
+        res.statusCode = 200;
         res.setHeader("Content-Type", "text/html");
         res.end(html);
+        return;
       }).catch((e) => {
         console.log(e);
         res.statusCode = 500;
         res.end("Internal Server Error");
+        return;
       });
     }).
     get("/", (req, res) => {
