@@ -16,7 +16,8 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
     },
     "devtool": false,
     "entry": {
-      "web.index": path.resolve(__dirname, "src", "web.index.jsx")
+      "redux.web.index": path.resolve(__dirname, "src", "redux.web.index.jsx"),
+      "context.web.index": path.resolve(__dirname, "src", "context.web.index.jsx")
     },
     "module": {
       "rules": [

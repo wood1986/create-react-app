@@ -1,19 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import components from "../components";
+import React, {useContext, useEffect, useState} from "react";
+import {ConfigsContext} from "../configs";
+import components from "../../components";
 import fetchConfigs from "../actions/fetchConfigs";
 
 // eslint-disable-next-line react/display-name
 export default React.memo((props) => {
-  // eslint-disable-next-line react/prop-types
-  const config = useSelector((state) => state.configs[props.id]),
-        dispatch = useDispatch(),
+  const {configs, dispatch} = useContext(ConfigsContext),
+        // eslint-disable-next-line react/prop-types
+        config = configs[props.id],
         [Component, setComponent] = useState(config && !(components[config.type] instanceof Function) ? components[config.type].default : null);
-
-  useEffect(() => {
-    // eslint-disable-next-line react/prop-types
-    dispatch(fetchConfigs([props.id]));
-  }, [config]);
 
   useEffect(() => {
     if (config) {
@@ -28,6 +23,9 @@ export default React.memo((props) => {
       } else if (Component) {
         setComponent(Component.default);
       }
+    } else {
+      // eslint-disable-next-line react/prop-types
+      fetchConfigs([props.id])(dispatch, configs);
     }
   }, [config]);
 
