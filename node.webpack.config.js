@@ -11,10 +11,6 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
       "useLocalIp": true
     },
     "devtool": false,
-    "entry": {
-      "node.index": path.resolve(__dirname, "src", "node.index.jsx"),
-      "vm.node.index": path.resolve(__dirname, "src", "vm.node.index.js")
-    },
     "module": {
       "rules": [
         {

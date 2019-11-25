@@ -5,7 +5,7 @@ import fetchConfigs from "../actions/fetchConfigs";
 
 // eslint-disable-next-line react/display-name
 export default React.memo((props) => {
-  const {configs, dispatch} = useContext(ConfigsContext),
+  const [configs, dispatch] = useContext(ConfigsContext),
         // eslint-disable-next-line react/prop-types
         config = configs[props.id],
         [Component, setComponent] = useState(config && !(components[config.type] instanceof Function) ? components[config.type].default : null);

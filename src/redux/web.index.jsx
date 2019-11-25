@@ -1,13 +1,13 @@
-import "./components";
-import App from "./context/App";
+import "../components";
+import App from "./App";
 import React from "react";
 import ReactDOM from "react-dom";
-import createStore from "./redux/createStore";
+import createStore from "./createStore";
 
-let element = document.getElementById("context");
+let element = document.getElementById("redux");
 if (!element) {
   element = document.createElement("DIV");
-  element.setAttribute("id", "context");
+  element.setAttribute("id", "redux");
   document.body.appendChild(element);
 }
 

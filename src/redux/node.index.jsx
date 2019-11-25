@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers, camelcase, no-undef */
-import "./components";
+import "../components";
 import App from "./App";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
@@ -17,11 +17,11 @@ export default (req) => {
   return Promise.resolve().
     then(() => store.dispatch(fetchConfigs(Array(count).
       fill(0).
-      map((value, index) => index)))).
+      map((_, index) => index)))).
     then(() => {
       const preloadedState = store.getState(),
             html = ssr ? ReactDOMServer.renderToStaticMarkup(<App count={count} store={store} />) : "",
-            scriptTags = ["web.index.js", "vendors.js"].map((script) => `<script async src='${MANIFEST[script]}'></script>`).join("");
+            scriptTags = ["redux.web.index.js", "vendors.js"].map((script) => `<script async src='${MANIFEST[script]}'></script>`).join("");
       return `<!DOCTYPE html>
 <html lang="en">
   <head>

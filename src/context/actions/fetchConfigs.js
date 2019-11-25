@@ -12,7 +12,8 @@ export default (ids) => (dispatch, configs) => {
     return;
   }
 
-  dispatch({
+  // eslint-disable-next-line consistent-return
+  return dispatch({
     "payload": ids.map((id) => ({
       id,
       // eslint-disable-next-line no-magic-numbers
