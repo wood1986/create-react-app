@@ -8,9 +8,7 @@ const http = require("http"),
       path = require("path"),
       morgan = require("morgan"),
       serveStatic = require("serve-static"),
-      app = require("./dist/node.index.js"),
-      fetch = require("node-fetch"),
-      vm = require("vm"),
+      fs = require("fs"),
       selfsigned = require("selfsigned");
 
 const pems = selfsigned.generate(null, {"algorithm": "sha256", "days": 1, "keySize": 2048}),
@@ -32,48 +30,45 @@ const pems = selfsigned.generate(null, {"algorithm": "sha256", "days": 1, "keySi
     use(morgan("tiny")).
     use("/statics", serveStatic(path.join(__dirname, "dist"))).
     get("/ssr", (req, res) => {
-      let p = null;
-      if (app.entry === req.query.entry && req.query.vm !== "true") {
-        p = app.default(req);
-      } else {
-        let code = codes.get(req.query.entry);
-        if (req.query.cache === "false" || !code || Date.now() - code.createdAt > 60 * 60 * 15 ) {
-          code = {};
-          code.promise = fetch(`https://localhost${req.query.entry}`).
-            then((res) => res.text()).
-            then((code) => new vm.Script(code));
-          code.createdAt = Date.now();
-          codes.set(req.query.entry, code);
+      const {entry} = req.query,
+            filename = entry.replace(/\//g, "_");
+
+      let promise = codes.get(filename);
+      if (!promise) {
+        if (entry) {
+          promise = new Promise((resolve, reject) => {
+            const stream = fs.createWriteStream(`./tmp/${filename}`);
+            stream.on("close", () => {
+              try {
+                resolve(require(`./tmp/${filename}`));
+              } catch (err) {
+                reject(err);
+              }
+            });
+            stream.on("error", reject);
+            http.get(`http://127.0.0.1${entry}`, (res) => { res.pipe(stream) });
+          });
+
+          codes.set(filename, promise);
         }
-
-        p = code.promise.then((script) => {
-          const options = {
-                  "timeout": 3000
-                },
-                sandbox = {
-                  "__SANDBOX_REQ__": req,
-                  ...global,
-                  console,
-                  require,
-                  URLSearchParams
-                };
-
-          script.runInNewContext(sandbox, options);
-          return sandbox.__SANDBOX_PROMISE__;
-        });
       }
 
-      p.then((html) => {
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "text/html");
-        res.end(html);
-        return;
-      }).catch((e) => {
-        console.log(e);
-        res.statusCode = 500;
-        res.end("Internal Server Error");
-        return;
-      });
+      if (promise) {
+        promise
+          .then(app => app.default(req))
+          .then(result => {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "text/html");
+            res.end(result);
+          }).catch(err => {
+            console.log(err);
+            res.statusCode = 500;
+            res.end();
+          })
+      } else {
+        res.statusCode = 404;
+        res.end();
+      }
     }).
     get("/", (req, res) => {
       res.statusCode = 200;

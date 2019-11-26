@@ -4,10 +4,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import createStore from "./createStore";
 
-let element = document.getElementById("redux");
+let element = document.getElementById("root");
 if (!element) {
   element = document.createElement("DIV");
-  element.setAttribute("id", "redux");
+  element.setAttribute("id", "root");
   document.body.appendChild(element);
 }
 

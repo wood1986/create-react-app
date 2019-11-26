@@ -8,21 +8,20 @@ import fetchConfigs from "./actions/fetchConfigs";
 
 globalThis.btoa = require("abab").btoa;
 
-export default (req) => {
+export default async (req) => {
   const params = new URLSearchParams(req.search),
         ssr = params.get("ssr") !== "false",
         count = ssr ? parseInt(params.get("count") || 0, 10) : 0,
         store = createStore();
 
-  return Promise.resolve().
-    then(() => store.dispatch(fetchConfigs(Array(count).
-      fill(0).
-      map((_, index) => index)))).
-    then(() => {
-      const preloadedState = store.getState(),
-            html = ssr ? ReactDOMServer.renderToStaticMarkup(<App count={count} store={store} />) : "",
-            scriptTags = ["redux.web.index.js", "vendors.js"].map((script) => `<script async src='${MANIFEST[script]}'></script>`).join("");
-      return `<!DOCTYPE html>
+  await store.dispatch(fetchConfigs(Array(count).
+    fill(0).
+    map((_, index) => index)));
+
+  const preloadedState = store.getState(),
+        html = ssr ? ReactDOMServer.renderToStaticMarkup(<App count={count} store={store} />) : "",
+        scriptTags = ["app.redux.js", "vendors.js"].map((script) => `<script async src='${MANIFEST[script]}'></script>`).join("");
+  return `<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>SSR</title>
@@ -35,7 +34,4 @@ export default (req) => {
     ${scriptTags}
   </body>
 </html>`;
-    });
 };
-
-export const entry = `${__webpack_public_path__}node.index.js`;

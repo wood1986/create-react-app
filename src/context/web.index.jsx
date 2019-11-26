@@ -4,10 +4,10 @@ import App from "./App";
 import React from "react";
 import ReactDOM from "react-dom";
 
-let element = document.getElementById("context");
+let element = document.getElementById("root");
 if (!element) {
   element = document.createElement("DIV");
-  element.setAttribute("id", "context");
+  element.setAttribute("id", "root");
   document.body.appendChild(element);
 }
 

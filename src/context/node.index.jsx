@@ -1,23 +1,22 @@
 /* eslint-disable no-magic-numbers, camelcase, no-undef, new-cap */
 import "../components";
 import App from "./App";
+import {ConfigsReducer} from "./configs";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import fetchConfigs from "./actions/fetchConfigs";
-import {ConfigsReducer} from "./configs";
 
 globalThis.btoa = require("abab").btoa;
 
-export default (req) => {
+export default async (req) => {
   const params = new URLSearchParams(req.search),
         ssr = params.get("ssr") !== "false",
-        count = ssr ? parseInt(params.get("count") || 0, 10) : 0;
-  let preloadedState = {};
-  preloadedState = fetchConfigs(Array(count).
-    fill(0).
-    map((_, index) => index))((action) => ConfigsReducer()(preloadedState, action), preloadedState);
-  const html = ssr ? ReactDOMServer.renderToStaticMarkup(<App count={count} preloadedState={preloadedState} />) : "",
-        scriptTags = ["app.js", "vendors.js"].map((script) => `<script async src='${MANIFEST[script]}'></script>`).join("");
+        count = ssr ? parseInt(params.get("count") || 0, 10) : 0,
+        preloadedState = await fetchConfigs(Array(count).
+          fill(0).
+          map((_, index) => index))((action) => ConfigsReducer()({}, action), {}),
+        html = ssr ? ReactDOMServer.renderToStaticMarkup(<App count={count} preloadedState={preloadedState} />) : "",
+        scriptTags = ["app.context.js", "vendors.js"].map((script) => `<script async src='${MANIFEST[script]}'></script>`).join("");
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -33,4 +32,3 @@ export default (req) => {
 </html>`;
 };
 
-export const entry = `${__webpack_public_path__}node.index.js`;

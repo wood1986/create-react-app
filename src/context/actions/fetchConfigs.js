@@ -9,11 +9,11 @@ export default (ids) => (dispatch, configs) => {
   ids = ids.filter((id) => !configs.hasOwnProperty(id));
 
   if (ids.length === 0) {
-    return;
+    return Promise.resolve();
   }
 
   // eslint-disable-next-line consistent-return
-  return dispatch({
+  return Promise.resolve(dispatch({
     "payload": ids.map((id) => ({
       id,
       // eslint-disable-next-line no-magic-numbers
@@ -21,5 +21,5 @@ export default (ids) => (dispatch, configs) => {
       "value": generateUuid()
     })),
     "type": FETCH_CONFIGS
-  });
+  }));
 };

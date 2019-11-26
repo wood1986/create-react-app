@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config=./web.webpack.config.js --mode=development",
-    "build:redux:web": "webpack --config=./web.webpack.config.js --output-public-path=/statics/ app=./src/redux/web.index.jsx",
-    "build:context:web": "webpack --config=./web.webpack.config.js --output-public-path=/statics/ app=./src/context/web.index.jsx",
+    "build:redux:web": "webpack --config=./web.webpack.config.js --output-public-path=/statics/ app.redux=./src/redux/web.index.jsx",
+    "build:context:web": "webpack --config=./web.webpack.config.js --output-public-path=/statics/ app.context=./src/context/web.index.jsx",
 
     "build:redux:web:dev": "yarn build:redux:web --mode=development",
     "build:context:web:dev": "yarn build:context:web --mode=development",
@@ -15,8 +15,8 @@
     "build:redux:web:pro": "yarn build:redux:web --mode=production",
     "build:context:web:pro": "yarn build:context:web --mode=production",
 
-    "build:redux:node": "webpack --config=./node.webpack.config.js --output-public-path=/statics/ app=./src/redux/node.index.jsx",
-    "build:context:node": "webpack --config=./node.webpack.config.js --output-public-path=/statics/ app=./src/context/node.index.jsx",
+    "build:redux:node": "webpack --config=./node.webpack.config.js --output-public-path=/statics/ app.redux=./src/redux/node.index.jsx",
+    "build:context:node": "webpack --config=./node.webpack.config.js --output-public-path=/statics/ app.context=./src/context/node.index.jsx",
 
     "build:redux:node:dev": "yarn build:redux:node --mode=development",
     "build:context:node:dev": "yarn build:context:node --mode=development",
@@ -24,8 +24,8 @@
     "build:redux:node:pro": "yarn build:redux:node --mode=production",
     "build:context:node:pro": "yarn build:context:node --mode=production",
 
-    "build:all:DEV": "yarn build:web:DEV && yarn run build:node:DEV",
-    "build:all:PRO": "yarn run build:web:PRO && yarn run build:node:PRO",
+    "build:redux:all:dev": "yarn build:redux:web:dev && yarn build:redux:node:dev",
+    "build:context:all:dev": "yarn build:context:web:dev && yarn build:context:node:dev",
     "eslint": "eslint -c ./.eslintrc.js --ext .js --ext .jsx --no-ignore '.eslintrc.js' .eslintrc.js .",
     "pm2": "pm2 kill && pm2 start && pm2 monit"
   },

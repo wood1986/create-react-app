@@ -42,7 +42,7 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
       ]
     },
     "output": {
-      "filename": "[name].js",
+      "filename": `[name].${argv.mode}.js`,
       "libraryTarget": "umd",
       "path": path.resolve(__dirname, "dist")
     },
