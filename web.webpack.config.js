@@ -6,18 +6,21 @@ const path = require("path"),
       SplitChunksPlugin = require("webpack/lib/optimize/SplitChunksPlugin"),
       ManifestPlugin = require("webpack-manifest-plugin");
 
-console.log(SplitChunksPlugin);
-
 module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
   const PROD = argv.mode === "production";
 
   return {
     "devServer": {
-      "host": "0.0.0.0",
       "open": true,
+      "openPage": ["index.context.html", "index.redux.html"],
       "writeToDisk": true
     },
     "devtool": false,
+    "entry": {
+      "app.context": path.resolve(__dirname, "src", "context", "web.index.jsx"),
+      "app.redux": path.resolve(__dirname, "src", "redux", "web.index.jsx"),
+      "inline": path.resolve(__dirname, "src", "inline")
+    },
     "module": {
       "rules": [
         {
@@ -78,12 +81,8 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
           "vendors": {
             "chunks": "all",
             "name": "vendors",
-            "test": (module, chunks) => {
-              const flag = chunks.findIndex((chunk) => chunk.name === "inline") === -1 &&
-                SplitChunksPlugin.checkTest(/node_modules/u, module);
-              console.log(module.rawRequest, flag);
-              return flag;
-            }
+            "test": (module, chunks) => chunks.findIndex((chunk) => chunk.name === "inline") === -1 &&
+              SplitChunksPlugin.checkTest(/node_modules/u, module)
           }
         }
       }
@@ -96,8 +95,13 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
     "plugins": [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
-        "excludeChunks": ["inline"],
-        "filename": "index.html",
+        "excludeChunks": ["inline", "app.context"],
+        "filename": "index.redux.html",
+        "template": path.resolve(__dirname, "src", "index.ejs")
+      }),
+      new HtmlWebpackPlugin({
+        "excludeChunks": ["inline", "app.redux"],
+        "filename": "index.context.html",
         "template": path.resolve(__dirname, "src", "index.ejs")
       }),
       new ManifestPlugin(),

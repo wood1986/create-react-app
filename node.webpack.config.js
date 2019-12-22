@@ -11,6 +11,10 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
       "useLocalIp": true
     },
     "devtool": false,
+    "entry": {
+      "app.context": path.resolve(__dirname, "src", "context", "web.index.jsx"),
+      "app.redux": path.resolve(__dirname, "src", "redux", "web.index.jsx")
+    },
     "module": {
       "rules": [
         {
