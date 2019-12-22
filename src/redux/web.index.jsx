@@ -1,3 +1,5 @@
+console.log("2");
+
 import "../components";
 import App from "./App";
 import React from "react";

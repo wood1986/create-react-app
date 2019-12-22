@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Webpack App</title>
+    <script>
+      <%= compilation.assets[compilation.namedChunks.get("inline").files[0]].source() %>
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

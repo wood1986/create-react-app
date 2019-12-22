@@ -5,25 +5,22 @@
   "author": "wood </>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --config=./web.webpack.config.js --mode=development",
-    "build:redux:web": "webpack --config=./web.webpack.config.js --output-public-path=/statics/ app.redux=./src/redux/web.index.jsx",
-    "build:context:web": "webpack --config=./web.webpack.config.js --output-public-path=/statics/ app.context=./src/context/web.index.jsx",
-
+    "debug:redux": "node --inspect-brk ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --mode=development --config=./web.webpack.config.js app.redux=./src/redux/web.index.jsx inline=./src/inline.js",
+    "debug:context": "node --inspect-brk ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --mode=development --config=./web.webpack.config.js app.context=./src/context/web.index.jsx inline=./src/inline.js",
+    "start:redux": "webpack-dev-server --mode=development --config=./web.webpack.config.js app.redux=./src/redux/web.index.jsx inline=./src/inline.js",
+    "start:context": "webpack-dev-server --mode=development --config=./web.webpack.config.js app.redux=./src/context/web.index.jsx inline=./src/inline.js",
+    "build:redux:web": "webpack --config=./web.webpack.config.js --output-public-path=/statics/ app.redux=./src/redux/web.index.jsx inline=./src/inline.js",
+    "build:context:web": "webpack --config=./web.webpack.config.js --output-public-path=/statics/ app.context=./src/context/web.index.jsx inline=./src/inline.js",
     "build:redux:web:dev": "yarn build:redux:web --mode=development",
     "build:context:web:dev": "yarn build:context:web --mode=development",
-
     "build:redux:web:pro": "yarn build:redux:web --mode=production",
     "build:context:web:pro": "yarn build:context:web --mode=production",
-
     "build:redux:node": "webpack --config=./node.webpack.config.js --output-public-path=/statics/ app.redux=./src/redux/node.index.jsx",
     "build:context:node": "webpack --config=./node.webpack.config.js --output-public-path=/statics/ app.context=./src/context/node.index.jsx",
-
     "build:redux:node:dev": "yarn build:redux:node --mode=development",
     "build:context:node:dev": "yarn build:context:node --mode=development",
-
     "build:redux:node:pro": "yarn build:redux:node --mode=production",
     "build:context:node:pro": "yarn build:context:node --mode=production",
-
     "build:redux:all:dev": "yarn build:redux:web:dev && yarn build:redux:node:dev",
     "build:context:all:dev": "yarn build:context:web:dev && yarn build:context:node:dev",
     "eslint": "eslint -c ./.eslintrc.js --ext .js --ext .jsx --no-ignore '.eslintrc.js' .eslintrc.js .",
@@ -71,7 +68,9 @@
     "webpack-dev-server": "^3.7.2",
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-node-externals": "^1.7.2",
-    "workbox-build": "^4.3.1",
-    "workbox-webpack-plugin": "^4.3.1"
+    "workbox-core": "^4.3.1",
+    "workbox-precaching": "^4.3.1",
+    "workbox-webpack-plugin": "^4.3.1",
+    "worker-loader": "^2.0.0"
   }
 }
