@@ -1,6 +1,7 @@
-import workbox from "workbox-core";
-import precaching from "workbox-precaching";
+import {clientsClaim, skipWaiting} from "workbox-core";
+import {precacheAndRoute} from "workbox-precaching";
 
-workbox.skipWaiting();
-workbox.clientsClaim();
-precaching.precacheAndRoute(self.__precacheManifest);
+skipWaiting();
+clientsClaim();
+// eslint-disable-next-line no-undef
+precacheAndRoute(__precacheManifest__);
