@@ -45,16 +45,6 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
               }
             }
           ]
-        },
-        {
-          "exclude": /node_modules/u,
-          "test": /\worker\.js$/u,
-          "use": {
-            "loader": "worker-loader",
-            "options": {
-              "name": `[name].${argv.mode}.[chunkhash].js`
-            }
-          }
         }
       ]
     },
