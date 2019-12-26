@@ -2,7 +2,6 @@ const path = require("path"),
       HtmlWebpackPlugin = require("html-webpack-plugin"),
       {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer"),
       {CleanWebpackPlugin} = require("clean-webpack-plugin"),
-      TerserPlugin = require("terser-webpack-plugin"),
       SplitChunksPlugin = require("webpack/lib/optimize/SplitChunksPlugin"),
       ManifestPlugin = require("webpack-manifest-plugin");
 
@@ -50,27 +49,15 @@ module.exports = (_env, argv) => { // eslint-disable-line max-lines-per-function
     },
     "optimization": {
       "chunkIds": "named",
-      "minimizer": PROD
-        ? [
-          new TerserPlugin({
-            "terserOptions": {
-              "mangle": false,
-              "output": {
-                "comments": false
-              }
-            }
-          })
-        ]
-        : [],
       "moduleIds": "hashed",
       "runtimeChunk": {
-        "name": (entrypoint) => entrypoint.name === "inline" ? `${entrypoint.name}` : "vendors"
+        "name": (entrypoint) => entrypoint.name === "inline" ? `${entrypoint.name}` : "web.vendors"
       },
       "splitChunks": {
         "cacheGroups": {
-          "vendors": {
+          "web.vendors": {
             "chunks": "all",
-            "name": "vendors",
+            "name": "web.vendors",
             "test": (module, chunks) => chunks.findIndex((chunk) => chunk.name === "inline") === -1 &&
               SplitChunksPlugin.checkTest(/node_modules/u, module)
           }
